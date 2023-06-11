@@ -12,11 +12,33 @@ class HymnBook with ChangeNotifier {
 
   List<Hymn> _staticHymns = [];
   List<Hymn> _foundHymns = [];
-  List<Hymn> returnedHymn = [];
+  List<Hymn> _returnedHymn = [];
 
   List<Hymn> setHymn() {
-    returnedHymn = hymnList;
-    return returnedHymn;
+    if (_returnedHymn.isEmpty) {
+      return hymnList;
+    } else {
+      return _returnedHymn;
+    }
+  }
+
+  void runFilter(String enteredUserHymn) {
+    List<Hymn> results = [];
+
+    if (enteredUserHymn.isEmpty) {
+      results = hymnList;
+    } else {
+      results = hymnList
+          .where((hymnbook) =>
+              hymnbook.verses[0][0].toLowerCase().contains(enteredUserHymn) ||
+              hymnbook.id.toLowerCase().contains(enteredUserHymn))
+          .toList();
+
+      _returnedHymn = results;
+      notifyListeners();
+    }
+
+    _returnedHymn = results;
   }
 
   final List<Hymn> _hymnBook = [
