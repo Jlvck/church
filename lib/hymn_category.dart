@@ -17,7 +17,6 @@ class HymnCategory extends StatefulWidget {
 class _HymnCategoryState extends State<HymnCategory> {
   final _enteredHymnNumber = TextEditingController();
   final _enteredHymnTitle = TextEditingController();
-  final FocusNode myfocusNode = FocusNode();
 
   List<Hymn> _staticHymns = [];
   List<Hymn> _foundHymns = [];
@@ -43,18 +42,18 @@ class _HymnCategoryState extends State<HymnCategory> {
 
   @override
   void initState() {
-    _staticHymns = Provider.of<HymnBook>(context, listen: false).setHymn();
     print('........initstate');
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    _foundHymns = _foundHymns.isEmpty &&
-            _enteredHymnNumber.value.text.isEmpty &&
-            _enteredHymnTitle.value.text.isEmpty
-        ? _staticHymns
-        : _foundHymns;
+    // _foundHymns = _foundHymns.isEmpty &&
+    //         _enteredHymnNumber.value.text.isEmpty &&
+    //         _enteredHymnTitle.value.text.isEmpty
+    //     ? _staticHymns
+    //     : _foundHymns;
+    _foundHymns = Provider.of<HymnBook>(context, listen: true).setHymn();
 
     super.didChangeDependencies();
   }
@@ -63,7 +62,7 @@ class _HymnCategoryState extends State<HymnCategory> {
   void dispose() {
     _enteredHymnNumber.dispose();
     _enteredHymnTitle.dispose();
-    myfocusNode.dispose();
+
     super.dispose();
   }
 
@@ -101,7 +100,7 @@ class _HymnCategoryState extends State<HymnCategory> {
                                 setState(() {
                                   _enteredHymnNumber.clear();
                                 });
-                                _runFilter(_enteredHymnNumber.value.text);
+                                // _runFilter(_enteredHymnNumber.value.text);
                               } else {
                                 _enteredHymnNumber.clear();
                               }
@@ -109,11 +108,11 @@ class _HymnCategoryState extends State<HymnCategory> {
                             controller: _enteredHymnTitle,
                             onChanged: (value) {
                               if (value == '') {
-                                setState(() {
-                                  _foundHymns = _staticHymns;
-                                });
+                                Provider.of<HymnBook>(context, listen: false)
+                                    .runFilter(value);
                               } else {
-                                _runFilter(value);
+                                Provider.of<HymnBook>(context, listen: false)
+                                    .runFilter(value);
                               }
                             },
                             keyboardType: TextInputType.text,
@@ -161,11 +160,11 @@ class _HymnCategoryState extends State<HymnCategory> {
                             ),
                             onChanged: (value) {
                               if (value == '') {
-                                setState(() {
-                                  _foundHymns = _staticHymns;
-                                });
+                                Provider.of<HymnBook>(context, listen: false)
+                                    .runFilter(value);
                               } else {
-                                _runFilter(value);
+                                Provider.of<HymnBook>(context, listen: false)
+                                    .runFilter(value);
                               }
                             },
                             onSubmitted: (_) {
