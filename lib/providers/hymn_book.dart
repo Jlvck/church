@@ -10,6 +10,15 @@ class HymnBook with ChangeNotifier {
     return [..._hymnBook];
   }
 
+  List<Hymn> _staticHymns = [];
+  List<Hymn> _foundHymns = [];
+  List<Hymn> returnedHymn = [];
+
+  List<Hymn> setHymn() {
+    returnedHymn = hymnList;
+    return returnedHymn;
+  }
+
   final List<Hymn> _hymnBook = [
     Hymn(
       id: '1',
